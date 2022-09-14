@@ -151,7 +151,8 @@ namespace finding_max_flow
 		vector<int> fattest_dist(size + 1, 0);
 		vector<int> parents(size + 1, -1);
 		parents[i_source] = 0;
-		priority_queue<pair<int, int>, vector<pair<int, int>>,greater<>> queue;
+	//	priority_queue<pair<int, int>, vector<pair<int, int>>> queue;
+		priority_queue<pair<int, int> > queue;
 		vector <pair<int, int>> pairs;
 
 		for (int i = 1; i < size; i++)
@@ -243,7 +244,10 @@ namespace finding_max_flow
 		if (is_value_valid(is_value_valid(i_u) && is_value_valid(i_v) && is_adjacent(i_u, i_v)))
 		{
 			m_verticesArray[i_u].get_node_by_data(i_v)->m_edge->m_flow += i_flow;
-			m_verticesArray[i_v].get_node_by_data(i_u)->m_edge->m_flow -= i_flow;
+			if (is_value_valid(is_value_valid(i_v) && is_value_valid(i_u) && is_adjacent(i_v, i_u)))
+			{
+				m_verticesArray[i_u].get_node_by_data(i_v)->m_edge->m_flow -= i_flow;
+			}
 			res = true;
 		}
 		return res;
@@ -254,7 +258,7 @@ namespace finding_max_flow
 		if (is_value_valid(is_value_valid(i_u) && is_value_valid(i_v) && is_adjacent(i_u, i_v)))
 		{
 			m_verticesArray[i_u].get_node_by_data(i_v)->m_edge->m_weight -= i_flow;
-			m_verticesArray[i_u].get_node_by_data(i_v)->m_edge->m_flow += i_flow;
+			m_verticesArray[i_v].get_node_by_data(i_u)->m_edge->m_weight += i_flow;
 			res = true;
 		}
 		return res;

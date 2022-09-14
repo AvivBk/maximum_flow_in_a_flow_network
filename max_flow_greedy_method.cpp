@@ -23,12 +23,12 @@ namespace finding_max_flow
 		bool res = false;
 		if (i_parents[i_dest] > 0)
 		{
-			const int min_flow = m_graph->find_minimum_capacity_on_path(i_parents, i_source, i_dest);
+			const int min_flow = m_residual_graph->find_minimum_capacity_on_path(i_parents, i_source, i_dest);
 			for (int v = i_dest; v != i_source; v = i_parents[v])
 			{
 				const int u = i_parents[v];
-				res = m_residual_graph->update_flow_in_edge(u, v, min_flow);
-				res = m_graph->update_capacity_in_edge(u, v, min_flow);
+				res = m_graph->update_flow_in_edge(u, v, min_flow);
+				res = m_residual_graph->update_capacity_in_edge(u, v, min_flow);
 			}
 			flow = min_flow;
 		}
@@ -43,7 +43,7 @@ namespace finding_max_flow
 		while (res)
 		{
 			std::vector<int> parents(m_graph->length() + 1, 0);
-			parents = m_graph->fattest_path_dijkstra(i_source);
+			parents = m_residual_graph->fattest_path_dijkstra(i_source);
 			int flow = 0;
 			const auto p = new int[m_graph->length() + 1];
 			for (int i = 1; i < m_graph->length(); i++)
@@ -70,7 +70,7 @@ namespace finding_max_flow
 	{
 		int* parents;
 		parents = new int[m_graph->length() + 1];
-		const int* distance_array = m_graph->run_bfs(i_source, i_dest, &parents);
+		const int* distance_array = m_residual_graph->run_bfs(i_source, i_dest, &parents);
 		const auto s = new int[m_graph->length()];
 		auto p_size = 0, t_size = 0;
 		for (int v = 1; v < m_graph->length(); v++)
